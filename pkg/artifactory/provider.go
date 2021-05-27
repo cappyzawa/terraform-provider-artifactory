@@ -2,6 +2,9 @@ package artifactory
 
 import (
 	"fmt"
+	"net/http"
+	"net/url"
+
 	artifactoryold "github.com/atlassian/go-artifactory/v2/artifactory"
 	"github.com/atlassian/go-artifactory/v2/artifactory/transport"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -10,12 +13,9 @@ import (
 	"github.com/jasonwbarnett/go-xray/xray"
 	artifactorynew "github.com/jfrog/jfrog-client-go/artifactory"
 	"github.com/jfrog/jfrog-client-go/artifactory/auth"
-	"github.com/jfrog/jfrog-client-go/artifactory/usage"
 	auth2 "github.com/jfrog/jfrog-client-go/auth"
 	"github.com/jfrog/jfrog-client-go/config"
 	"github.com/jfrog/jfrog-client-go/utils/log"
-	"net/http"
-	"net/url"
 )
 
 var repoTypeValidator = validation.StringInSlice([]string{
@@ -136,7 +136,6 @@ func Provider() terraform.ResourceProvider {
 
 // Creates the client for artifactory, will prefer token auth over basic auth if both set
 func providerConfigure(d *schema.ResourceData, terraformVersion string) (interface{}, error) {
-
 	if key, ok := d.GetOk("url"); key == nil || key == "" || !ok {
 		return nil, fmt.Errorf("you must supply a URL")
 	}
@@ -144,7 +143,6 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 	log.SetLogger(log.NewLogger(log.INFO, nil))
 
 	u, err := url.ParseRequestURI(d.Get("url").(string))
-
 	if err != nil {
 		return nil, err
 	}
@@ -161,13 +159,11 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 		SetServiceDetails(details).
 		SetDryRun(false).
 		Build()
-
 	if err != nil {
 		return nil, err
 	}
 
 	rtOld, err := artifactoryold.NewClient(artifactoryEndpoint, client)
-
 	if err != nil {
 		return nil, err
 	}
@@ -185,11 +181,12 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 		return nil, err
 	}
 
-	productId := "terraform-provider-artifactory/" + ProviderVersion
-	commandId := "Terraform/" + terraformVersion
-	if err = usage.SendReportUsage(productId, commandId, rtNew); err != nil {
-		return nil, err
-	}
+	// Temporary action until https://github.com/jfrog/jfrog-client-go/pull/353 is reflected in this PR
+	// productId := "terraform-provider-artifactory/" + ProviderVersion
+	// commandId := "Terraform/" + terraformVersion
+	// if err = usage.SendReportUsage(productId, commandId, rtNew); err != nil {
+	// 	return nil, err
+	// }
 
 	rt := &ArtClient{
 		ArtOld: rtOld,
