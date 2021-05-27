@@ -13,6 +13,7 @@ import (
 	"github.com/jasonwbarnett/go-xray/xray"
 	artifactorynew "github.com/jfrog/jfrog-client-go/artifactory"
 	"github.com/jfrog/jfrog-client-go/artifactory/auth"
+	"github.com/jfrog/jfrog-client-go/artifactory/usage"
 	auth2 "github.com/jfrog/jfrog-client-go/auth"
 	"github.com/jfrog/jfrog-client-go/config"
 	"github.com/jfrog/jfrog-client-go/utils/log"
@@ -168,7 +169,7 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 		return nil, err
 	}
 
-	rtNew, err := artifactorynew.New(&details, cfg)
+	rtNew, err := artifactorynew.New(cfg)
 
 	if err != nil {
 		return nil, err
@@ -181,16 +182,15 @@ func providerConfigure(d *schema.ResourceData, terraformVersion string) (interfa
 		return nil, err
 	}
 
-	// Temporary action until https://github.com/jfrog/jfrog-client-go/pull/353 is reflected in this PR
-	// productId := "terraform-provider-artifactory/" + ProviderVersion
-	// commandId := "Terraform/" + terraformVersion
-	// if err = usage.SendReportUsage(productId, commandId, rtNew); err != nil {
-	// 	return nil, err
-	// }
+	productId := "terraform-provider-artifactory/" + ProviderVersion
+	commandId := "Terraform/" + terraformVersion
+	if err = usage.SendReportUsage(productId, commandId, rtNew); err != nil {
+		return nil, err
+	}
 
 	rt := &ArtClient{
 		ArtOld: rtOld,
-		ArtNew: rtNew,
+		ArtNew: &rtNew,
 		Xray:   rtXray,
 	}
 
