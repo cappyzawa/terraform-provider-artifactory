@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/atlassian/go-artifactory/v2/artifactory"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type ResourceData struct{ *schema.ResourceData }

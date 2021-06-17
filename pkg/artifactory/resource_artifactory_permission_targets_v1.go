@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	v1 "github.com/atlassian/go-artifactory/v2/artifactory/v1"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/hashcode"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/atlassian/terraform-provider-artifactory/pkg/helper/hashcode"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func unpackPermissionTargetV1(s *schema.ResourceData) *v1.PermissionTargets {

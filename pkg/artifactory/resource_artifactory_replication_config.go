@@ -7,7 +7,7 @@ import (
 
 	"github.com/atlassian/go-artifactory/v2/artifactory"
 	v1 "github.com/atlassian/go-artifactory/v2/artifactory/v1"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceArtifactoryReplicationConfig() *schema.Resource {
@@ -240,7 +240,6 @@ func resourceReplicationConfigRead(d *schema.ResourceData, m interface{}) error 
 	c := m.(*ArtClient).ArtOld
 
 	replicationConfig, _, err := c.V1.Artifacts.GetRepositoryReplicationConfig(context.Background(), d.Id())
-
 	if err != nil {
 		return err
 	}

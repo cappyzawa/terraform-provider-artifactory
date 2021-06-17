@@ -11,8 +11,8 @@ import (
 
 	artifactoryold "github.com/atlassian/go-artifactory/v2/artifactory"
 	"github.com/atlassian/go-artifactory/v2/artifactory/transport"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/jfrog/jfrog-client-go/artifactory/auth"
 )
 
@@ -413,7 +413,6 @@ func testAccCheckAccessTokenDestroy(id string) func(*terraform.State) error {
 		client = tp.Client()
 
 		rtold, err := artifactoryold.NewClient(url, client)
-
 		if err != nil {
 			return err
 		}

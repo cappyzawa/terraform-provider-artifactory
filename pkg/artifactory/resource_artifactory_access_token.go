@@ -13,8 +13,8 @@ import (
 	"github.com/atlassian/go-artifactory/v2/artifactory"
 	artifactoryold "github.com/atlassian/go-artifactory/v2/artifactory"
 	v1 "github.com/atlassian/go-artifactory/v2/artifactory/v1"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/hashcode"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/atlassian/terraform-provider-artifactory/pkg/helper/hashcode"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceArtifactoryAccessToken() *schema.Resource {
@@ -224,7 +224,6 @@ func resourceAccessTokenDelete(d *schema.ResourceData, m interface{}) error {
 		revokeOptions.Token = d.Get("access_token").(string)
 
 		_, resp, err := client.V1.Security.RevokeToken(context.Background(), revokeOptions)
-
 		if err != nil {
 			return err
 		}
@@ -277,7 +276,6 @@ func unpackAdminToken(d *schema.ResourceData, tokenOptions *v1.AccessTokenOption
 
 func checkUserExists(client *artifactoryold.Artifactory, name string) (bool, error) {
 	_, resp, err := client.V1.Security.GetUser(context.Background(), name)
-
 	// If there is an error, it possible the user does not exist.
 	if err != nil {
 		if resp != nil {
@@ -300,7 +298,6 @@ func checkUserExists(client *artifactoryold.Artifactory, name string) (bool, err
 
 func checkGroupExists(client *artifactoryold.Artifactory, name string) (bool, error) {
 	_, resp, err := client.V1.Security.GetGroup(context.Background(), name)
-
 	// If there is an error, it possible the group does not exist.
 	if err != nil {
 		if resp != nil {

@@ -3,11 +3,11 @@ package artifactory
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"net/http"
 
-	"github.com/atlassian/go-artifactory/v2/artifactory/v1"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	v1 "github.com/atlassian/go-artifactory/v2/artifactory/v1"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func resourceArtifactoryGroup() *schema.Resource {
@@ -80,7 +80,6 @@ func resourceGroupCreate(d *schema.ResourceData, m interface{}) error {
 	c := m.(*ArtClient).ArtOld
 
 	group, err := unmarshalGroup(d)
-
 	if err != nil {
 		return err
 	}
